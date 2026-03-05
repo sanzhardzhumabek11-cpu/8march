@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="kk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>8 марттарыңмен қыздар</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Montserrat:wght@300;400;500&display=swap" rel="stylesheet">
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    
+    <style>
+        body {
+            font-family: 'Montserrat', sans-serif;
+            overflow-x: hidden;
+        }
+        h1, h2, .elegant-font {
+            font-family: 'Cormorant Garamond', serif;
+        }
+        
+        .glass-card {
+            background: rgba(255, 255, 255, 0.65);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.8);
+        }
+
+        /* Animations */
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+            100% { transform: translateY(0px); }
+        }
+        .animate-float {
+            animation: float 4s ease-in-out infinite;
+        }
+
+        @keyframes fadeInScale {
+            0% { opacity: 0; transform: scale(0.95); }
+            100% { opacity: 1; transform: scale(1); }
+        }
+        .animate-fade-in {
+            animation: fadeInScale 1s ease-out forwards;
+        }
+
+        @keyframes fadeOut {
+            0% { opacity: 1; visibility: visible; }
+            100% { opacity: 0; visibility: hidden; }
+        }
+        .animate-fade-out {
+            animation: fadeOut 0.8s ease-in forwards;
+        }
+
+        /* Floating Petals Background */
+        .petal {
+            position: absolute;
+            background: radial-gradient(circle, #ffb6c1, #ffc0cb);
+            border-radius: 15px 0 15px 0;
+            opacity: 0.6;
+            animation: fall linear infinite;
+        }
+        @keyframes fall {
+            0% { transform: translateY(-10vh) rotate(0deg); opacity: 0; }
+            10% { opacity: 0.6; }
+            90% { opacity: 0.6; }
+            100% { transform: translateY(100vh) rotate(360deg); opacity: 0; }
+        }
+    </style>
+</head>
+<body class="min-h-screen bg-gradient-to-br from-pink-100 via-rose-50 to-orange-100 relative flex items-center justify-center p-4">
+
+    <!-- Аудио файл -->
+    <audio id="bgMusic" src="Jazzdauren - Әр әйел бақытты болуға лайықты.mpeg" loop></audio>
+
+    <!-- Алғашқы экран (Шақыруды ашу) -->
+    <div id="welcomeOverlay" class="fixed inset-0 z-50 flex flex-col items-center justify-center bg-gradient-to-br from-pink-100 via-rose-50 to-orange-100 cursor-pointer transition-all duration-700" onclick="openInvitation()">
+        <div class="animate-float text-center">
+            <div class="bg-white/50 p-6 rounded-full inline-block mb-6 shadow-xl shadow-pink-200/50">
+                <i data-lucide="mail-heart" class="w-16 h-16 text-rose-500"></i>
+            </div>
+            <h2 class="text-3xl elegant-font text-rose-800 mb-3 font-semibold">Сізге арналған шақырту</h2>
+            <p class="text-pink-600/80 uppercase tracking-widest text-sm animate-pulse font-medium">Ашу үшін экранды басыңыз</p>
+        </div>
+    </div>
+
+    <!-- Әуенді басқару батырмасы (бастапқыда жасырын тұрады) -->
+    <button id="musicToggle" onclick="toggleMusic()" class="fixed top-4 right-4 z-40 bg-white/60 backdrop-blur-md p-3 rounded-full shadow-lg text-rose-500 hidden hover:bg-white/80 transition-all">
+        <i data-lucide="volume-2" id="musicIcon" class="w-6 h-6"></i>
+    </button>
+
+    <!-- Декоративті фон (жапырақшалар) -->
+    <div id="petals-container" class="fixed inset-0 pointer-events-none overflow-hidden z-0 hidden"></div>
+
+    <!-- Негізгі шақырту картасы (бастапқыда жасырын тұрады) -->
+    <div id="mainContent" class="glass-card max-w-md w-full rounded-3xl p-8 sm:p-10 shadow-2xl relative z-10 hidden">
+        
+        <!-- Header / Icon -->
+        <div class="flex justify-center mb-6 animate-float">
+            <div class="bg-gradient-to-tr from-pink-300 to-rose-200 p-4 rounded-full shadow-lg shadow-pink-200/50 text-white">
+                <i data-lucide="flower-2" class="w-10 h-10"></i>
+            </div>
+        </div>
+
+        <!-- Title -->
+        <h1 class="text-3xl sm:text-4xl text-center font-semibold text-rose-800 mb-6 elegant-font leading-tight">
+            Көктем<br>Мерекесімен!
+        </h1>
+
+        <!-- Message Body -->
+        <div class="text-gray-700 text-center space-y-4 mb-8 text-sm sm:text-base leading-relaxed">
+            <p>Құрметті де сүйікті арулар! 🌸</p>
+            <p>
+                Сіздерді көктемнің ең нәзік, шуақты мерекесімен шын жүректен құттықтаймыз! Осы бір ерекше күнде бас қосып, сыр шертіп, тамаша көңіл-күймен бөлісуге шақырамыз. 
+            </p>
+            <p>
+                Жарқын күлкілеріңіз бен қайталанбас сұлулықтарыңыз кешіміздің басты сәні болмақ. Мерекені бірге, керемет өткізейік! ✨
+            </p>
+        </div>
+
+        <!-- Event Details Box -->
+        <div class="bg-white/50 rounded-2xl p-5 mb-8 space-y-4 border border-pink-100">
+            <div class="flex items-center text-gray-800">
+                <div class="bg-pink-100 p-2 rounded-lg text-pink-600 mr-4">
+                    <i data-lucide="calendar-heart" class="w-5 h-5"></i>
+                </div>
+                <div>
+                    <p class="text-xs text-gray-500 uppercase tracking-wider font-semibold">Күні</p>
+                    <p class="font-medium">7 наурыз, сағат 17:00</p>
+                </div>
+            </div>
+
+            <div class="w-full h-px bg-pink-200/50"></div>
+
+            <div class="flex items-center text-gray-800">
+                <div class="bg-pink-100 p-2 rounded-lg text-pink-600 mr-4">
+                    <i data-lucide="map-pin" class="w-5 h-5"></i>
+                </div>
+                <div>
+                    <p class="text-xs text-gray-500 uppercase tracking-wider font-semibold">Өтетін орны</p>
+                    <p class="font-medium">"Mahalla" мейрамханасы</p>
+                    <p class="text-sm text-gray-600">Достық даңғылы, 105</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- RSVP Action -->
+        <div class="text-center" id="action-container">
+            <button onclick="confirmAttendance()" class="w-full bg-gradient-to-r from-rose-400 to-pink-500 hover:from-rose-500 hover:to-pink-600 text-white font-medium py-4 px-6 rounded-xl shadow-lg shadow-pink-300/50 transform transition duration-300 hover:-translate-y-1 hover:scale-[1.02] active:scale-95 flex justify-center items-center gap-2">
+                Асыға күтеміз! <i data-lucide="heart" class="w-5 h-5 fill-current"></i>
+            </button>
+        </div>
+        
+        <!-- Success Message -->
+        <div id="success-message" class="hidden text-center animate-fade-in bg-pink-50 text-pink-700 p-4 rounded-xl border border-pink-200">
+            <i data-lucide="sparkles" class="w-6 h-6 mx-auto mb-2 text-pink-500"></i>
+            <p class="font-medium elegant-font text-xl">Керемет! Сізді күтетін боламыз!</p>
+        </div>
+
+    </div>
+
+    <script>
+        // Lucide иконкаларын іске қосу
+        lucide.createIcons();
+
+        const bgMusic = document.getElementById('bgMusic');
+        const musicIcon = document.getElementById('musicIcon');
+        let isPlaying = false;
+
+        // Шақыруды ашу (Әуенді бастау)
+        function openInvitation() {
+            const overlay = document.getElementById('welcomeOverlay');
+            const mainContent = document.getElementById('mainContent');
+            const musicBtn = document.getElementById('musicToggle');
+            const petals = document.getElementById('petals-container');
+
+            // Экранды жоғалту
+            overlay.classList.add('animate-fade-out');
+            setTimeout(() => {
+                overlay.style.display = 'none';
+                mainContent.classList.remove('hidden');
+                mainContent.classList.add('animate-fade-in');
+                musicBtn.classList.remove('hidden');
+                petals.classList.remove('hidden');
+                
+                // Жапырақшалар анимациясын қосу
+                createPetals(15);
+                
+                // Музыканы қосу
+                playMusic();
+            }, 800);
+        }
+
+        function playMusic() {
+            bgMusic.play().then(() => {
+                isPlaying = true;
+                updateMusicIcon();
+            }).catch(error => {
+                console.log("Автоматты түрде ойнатуға рұқсат жоқ:", error);
+            });
+        }
+
+        // Әуенді қосу/өшіру
+        function toggleMusic() {
+            if (isPlaying) {
+                bgMusic.pause();
+                isPlaying = false;
+            } else {
+                bgMusic.play();
+                isPlaying = true;
+            }
+            updateMusicIcon();
+        }
+
+        function updateMusicIcon() {
+            if (isPlaying) {
+                musicIcon.setAttribute('data-lucide', 'volume-2');
+            } else {
+                musicIcon.setAttribute('data-lucide', 'volume-x');
+            }
+            lucide.createIcons();
+        }
+
+        // Қатысуды растау батырмасы
+        function confirmAttendance() {
+            const btnContainer = document.getElementById('action-container');
+            const successMsg = document.getElementById('success-message');
+            
+            btnContainer.style.display = 'none';
+            successMsg.classList.remove('hidden');
+            
+            // Қосымша жапырақшалар шығару
+            createPetals(20);
+        }
+
+        // Фондағы гүл жапырақшаларын жасау
+        function createPetals(count = 15) {
+            const container = document.getElementById('petals-container');
+            for (let i = 0; i < count; i++) {
+                const petal = document.createElement('div');
+                petal.classList.add('petal');
+                
+                const size = Math.random() * 15 + 10;
+                const left = Math.random() * 100;
+                const duration = Math.random() * 5 + 5;
+                const delay = Math.random() * 5;
+                
+                petal.style.width = `${size}px`;
+                petal.style.height = `${size}px`;
+                petal.style.left = `${left}vw`;
+                petal.style.animationDuration = `${duration}s`;
+                petal.style.animationDelay = `${delay}s`;
+                
+                container.appendChild(petal);
+            }
+        }
+    </script>
+</body>
+</html>
